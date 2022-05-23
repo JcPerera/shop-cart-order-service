@@ -2,7 +2,9 @@ package com.shop.cartorderservice.service;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shop.cartorderservice.dto.Address;
+import com.shop.cartorderservice.dto.OrderDto;
 import com.shop.cartorderservice.dto.ProductQty;
+import com.shop.cartorderservice.mapper.OrderMapper;
 import com.shop.cartorderservice.model.Order;
 import com.shop.cartorderservice.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,30 +21,35 @@ public class OrderServiceImpl implements OrderService{
     @Autowired
     OrderRepository orderRepository;
 
+    @Autowired
+    OrderMapper orderMapper;
+
     @Override
-    public Order createOrder(Order order) {
-        order.setCreatedAt(new Date());
+    public OrderDto createOrder(OrderDto orderDto) {
+        Order order = orderMapper.orderDtoToOrder(orderDto);
         order.setUpdatedAt(new Date());
-        return orderRepository.save(order);
+        order.setCreatedAt(new Date());
+        Order newOrder = orderRepository.save(order);
+        return orderMapper.orderToOrderDto(newOrder);
     }
 
     @Override
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+    public List<OrderDto> getAllOrders() {
+        List<Order> orders = orderRepository.findAll();
+        return orderMapper.orderListToOrderDtoList(orders);
     }
 
     @Override
-    public Order updateOrder(Order newOrder) {
-        Order order = orderRepository.findById(newOrder.getId()).orElse(null);
+    public OrderDto updateOrder(OrderDto orderDto) {
+        Order order = orderRepository.findById(orderDto.getId()).orElse(null);
+        OrderDto updatedOrderDto = null;
         if(order!= null){
-            order.setProducts(newOrder.getProducts());
-            order.setAmount(newOrder.getAmount());
-            order.setAddress(newOrder.getAddress());
-            order.setStatus(newOrder.getStatus());
+            order = orderMapper.orderDtoToOrder(orderDto);
             order.setUpdatedAt(new Date());
-            return orderRepository.save(order);
+            Order updatedOrder = orderRepository.save(order);
+            updatedOrderDto = orderMapper.orderToOrderDto(updatedOrder);
         }
-        return null;
+        return updatedOrderDto;
     }
 
     @Override

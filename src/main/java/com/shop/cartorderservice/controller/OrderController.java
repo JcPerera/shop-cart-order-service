@@ -1,8 +1,9 @@
 package com.shop.cartorderservice.controller;
 
-import com.shop.cartorderservice.model.Order;
+import com.shop.cartorderservice.dto.OrderDto;
 import com.shop.cartorderservice.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.aggregation.BooleanOperators;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,13 +22,12 @@ public class OrderController {
     OrderService orderService;
 
     @PostMapping("/order")
-    public ResponseEntity<Void> createOrder(@RequestBody Order order){
-        orderService.createOrder(order);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto orderDto){
+        return ResponseEntity.ok(orderService.createOrder(orderDto));
     }
 
     @GetMapping("/order")
-    public ResponseEntity<List<Order>> getAllOrders(){
+    public ResponseEntity<List<OrderDto>> getAllOrders(){
         return ResponseEntity.ok(orderService.getAllOrders());
     }
 
@@ -38,8 +38,8 @@ public class OrderController {
     }
 
     @PutMapping("/order/{orderId}")
-    public ResponseEntity<Order> updateOrder(@PathVariable(value = "orderId") String orderId, @RequestBody Order order){
-        order.setId(orderId);
-        return ResponseEntity.ok(orderService.updateOrder(order));
+    public ResponseEntity<OrderDto> updateOrder(@PathVariable(value = "orderId") String orderId, @RequestBody OrderDto orderDto){
+        orderDto.setId(orderId);
+        return ResponseEntity.ok(orderService.updateOrder(orderDto));
     }
 }
