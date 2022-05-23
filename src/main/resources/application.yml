@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: cart-order-service
+  data:
+    mongodb:
+      uri: mongodb+srv://jcperera:${mongodbPassword}@cluster0.s9fqv.mongodb.net/?retryWrites=true&w=majority
+      database: online-shop
+
+server:
+  port: 8010
