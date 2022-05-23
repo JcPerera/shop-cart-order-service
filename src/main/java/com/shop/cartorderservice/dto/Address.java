@@ -1,5 +1,7 @@
 package com.shop.cartorderservice.dto;
 
+import org.springframework.util.Assert;
+
 public class Address {
     private String street;
     private String suburb;
@@ -7,6 +9,10 @@ public class Address {
     private String country;
 
     public Address(String street, String suburb, String postCode, String country) {
+        Assert.hasText(street, "Street must not be null or empty!");
+        Assert.hasText(suburb, "Suburb must not be null or empty!");
+        Assert.hasText(postCode, "Post Code must not be null or empty!");
+        Assert.hasText(country, "Country must not be null or empty!");
         this.street = street;
         this.suburb = suburb;
         this.postCode = postCode;

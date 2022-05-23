@@ -5,6 +5,7 @@ import com.shop.cartorderservice.dto.Address;
 import com.shop.cartorderservice.dto.ProductQty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.util.Assert;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -26,6 +27,9 @@ public class Order {
 
 
     public Order(String id, String userId, ProductQty[] products, double amount, Address address, String status, Date createdAt, Date updatedAt) {
+        Assert.hasText(userId, "User Id must not be null or empty!");
+        Assert.notNull(address, "Address must not be null or empty!");
+        Assert.hasText(status, "Status must not be null or empty!");
         this.id = id;
         this.userId = userId;
         this.products = products;
