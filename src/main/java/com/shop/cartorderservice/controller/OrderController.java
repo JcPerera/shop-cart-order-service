@@ -42,4 +42,9 @@ public class OrderController {
         orderDto.setId(orderId);
         return ResponseEntity.ok(orderService.updateOrder(orderDto));
     }
+
+    @GetMapping("/order/user/{userId}")
+    public ResponseEntity<List<OrderDto>> getUsersAllOrders(@PathVariable(value = "userId") String userId){
+        return ResponseEntity.ok(orderService.getAllOrdersByUserId(userId));
+    }
 }

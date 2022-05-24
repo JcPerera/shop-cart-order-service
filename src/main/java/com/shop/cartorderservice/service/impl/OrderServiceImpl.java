@@ -1,4 +1,4 @@
-package com.shop.cartorderservice.service;
+package com.shop.cartorderservice.service.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shop.cartorderservice.dto.Address;
@@ -7,6 +7,7 @@ import com.shop.cartorderservice.dto.ProductQty;
 import com.shop.cartorderservice.mapper.OrderMapper;
 import com.shop.cartorderservice.model.Order;
 import com.shop.cartorderservice.repository.OrderRepository;
+import com.shop.cartorderservice.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class OrderServiceImpl implements OrderService{
+public class OrderServiceImpl implements OrderService {
 
     @Autowired
     OrderRepository orderRepository;
@@ -43,7 +44,7 @@ public class OrderServiceImpl implements OrderService{
     public OrderDto updateOrder(OrderDto orderDto) {
         Order order = orderRepository.findById(orderDto.getId()).orElse(null);
         OrderDto updatedOrderDto = null;
-        if(order!= null){
+        if (order != null) {
             order = orderMapper.orderDtoToOrder(orderDto);
             order.setUpdatedAt(new Date());
             Order updatedOrder = orderRepository.save(order);
@@ -55,5 +56,11 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public void deleteOrder(String orderId) {
         orderRepository.deleteById(orderId);
+    }
+
+    @Override
+    public List<OrderDto> getAllOrdersByUserId(String userId) {
+        List<Order> orders = orderRepository.findAllByUserId(userId);
+        return orderMapper.orderListToOrderDtoList(orders);
     }
 }

@@ -1,6 +1,5 @@
 package com.shop.cartorderservice.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shop.cartorderservice.dto.Address;
 import com.shop.cartorderservice.dto.ProductQty;
 import org.springframework.data.annotation.Id;
@@ -20,9 +19,7 @@ public class Order {
     private double amount;
     private Address address;
     private String status;
-    @JsonIgnore
     private Date createdAt;
-    @JsonIgnore
     private Date updatedAt;
 
 
